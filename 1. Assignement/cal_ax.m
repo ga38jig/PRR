@@ -10,6 +10,12 @@ ct = 1/2*(nx+sy+az-1);
 st_1 = 1/2*sqrt( (sz-ay)^2 + (ax-nz)^2 + (ny-sx)^2 );
 st_2 = -1/2*sqrt( (sz-ay)^2 + (ax-nz)^2 + (ny-sx)^2 );
 
+disp(sign(sz - ay))
+disp(sign(ax - nz))
+disp(sign(ny - sx))
+
+if(sign(sz - ay))
+
 theta_1 = atan2(st_1,ct);
 % theta_2 = atan2(st_2,ct);
 
