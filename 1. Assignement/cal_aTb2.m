@@ -6,6 +6,5 @@ aRb = trotz(alpha)*troty(beta)*trotx(gamma);
 
 aTb2 = transl(psb)*aRb;
 
-
 end
 
