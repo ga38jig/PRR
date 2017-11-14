@@ -129,10 +129,10 @@ theta1 = pi/4;
 theta2 = pi/4;
 theta3 = pi/4;
 
-OTa = transl(4, 0, 0) * trotz(theta1);
-aTb = transl(3, 0, 0) * trotz(theta2);
-cTE = transl(2, 0, 0) * trotz(theta3);
-
-OTa = OTa * aTb * cTE;
+% OTa = transl(4, 0, 0) * trotz(theta1);
+% aTb = transl(3, 0, 0) * trotz(theta2);
+% cTE = transl(2, 0, 0) * trotz(theta3);
+% 
+% OTa = OTa * aTb * cTE;
 
 
