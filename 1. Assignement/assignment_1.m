@@ -100,9 +100,11 @@ disp(trotz(pi/2))
 
 %% TEST: Test cal_ax  with results from cal_aTb5.
 
-T = cal_aTb5([0;1;0], pi/2)
+disp("TEST: Test cal_ax  with results from cal_aTb5.")
 
-[k, theta] = cal_ax1(T)
+T_ = cal_aTb5([0;1;0], pi/2)
+
+[k_, theta_] = cal_ax(T_)
 
 %%
 
@@ -123,16 +125,61 @@ disp("  2   | 3   |   0     |  0  |  theta2 ")
 disp("  3   | 2   |   0     |  0  |  theta3 ")
 disp(newline)
 
-%% b) Compute 0TE and extract position (rx, ry) and orientation (phi)
+%% b) Compute 0TE manually and extract position (rx, ry) and orientation (phi).
 
-theta1 = pi/4;
-theta2 = pi/4;
-theta3 = pi/4;
+theta1 = pi;
+theta2 = pi/2;
+theta3 = pi/3;
 
-% OTa = transl(4, 0, 0) * trotz(theta1);
-% aTb = transl(3, 0, 0) * trotz(theta2);
-% cTE = transl(2, 0, 0) * trotz(theta3);
-% 
-% OTa = OTa * aTb * cTE;
+oTa = trotz(theta1) * transl(4, 0, 0);
+aTb = trotz(theta2) * transl(3, 0, 0);
+bTe = trotz(theta3) * transl(2, 0, 0);
+
+oTe1 = oTa * aTb * bTe;
+
+syms theta1_ theta2_ theta3_
+syms oTe_(theta1_, theta2_, theta3_)
+
+oTe_(theta1_,theta2_,theta3_)=transl(4, 0, 0) * trotz(theta1_)...
+                        * transl(3, 0, 0) * trotz(theta2_)...
+                        * transl(2, 0, 0) * trotz(theta3_);
+                    
+oTe_sym = vpa(oTe_(theta1, theta2, theta3),5);
+
+rx = oTe1(1,4);
+ry = oTe1(2,4);
+ph = theta1 + theta2 + theta3;
+
+oTe1
+
+%% c) Implement vwl to compute forward kinematics of the robot.
+
+[ oTe2, rx, ry, ph ] = vwl(theta1, theta2, theta3);
+oTe2
+
+%% TEST: Use functions Link(), SerialLink() and fkine() to test results.
+
+L(1) = Link('d', 0, 'a', 4, 'alpha', 0);
+L(2) = Link('d', 0, 'a', 3, 'alpha', 0);
+L(3) = Link('d', 0, 'a', 2, 'alpha', 0);
+q=[theta1,theta2,theta3];
+
+planar_robot = SerialLink(L, 'name', 'planar_robot');
+
+oTe3 = planar_robot.fkine(q);
+
+oTe3
+
+%% d) Implement cal_ss to compute the work space of the robot.
+
+P = cal_ss();
+
+%% TEST: Draw the workspace of the robot and animate it with teach().
+
+plot(P(1,:),P(2,:))
+
+planar_robot.teach([0,0,0], 'deg')
+
+
 
 
