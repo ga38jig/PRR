@@ -178,7 +178,10 @@ P = cal_ss();
 
 plot(P(1,:),P(2,:))
 
-planar_robot.teach([0,0,0], 'deg')
+%planar_robot.teach([0,0,0], 'deg')
+
+planar_robot.teach([pi/2,-pi/4, -pi/3])
+
 
 
 

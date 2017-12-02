@@ -24,8 +24,24 @@ s.t3
 J = cal_J(pi,pi/2,pi/3)
 
 %% TEST: Test a) and b) with jacob0()
+L(1) = Link('d', 0, 'a', 4, 'alpha', 0);
+L(2) = Link('d', 0, 'a', 3, 'alpha', 0);
+L(3) = Link('d', 0, 'a', 2, 'alpha', 0);
+
+R = SerialLink(L, 'name', 'planar_robot');
+
+J0 = R.jacob0([pi, pi/2, pi/3],'rpy')
 
 %% c) Implement rrc() to simulate the movement of the robot using the Resolved Rate Control.
+
+q0 = degtorad([10 20 30]');
+dw0 = [0.2 -0.3 -0.2]';
+F0 = [1 2 3]';
+T = 5;
+
+[ Q, dQ, W, K, Tao] = rrc(q0, dw0, F0, T);
+
+
 
 
 
