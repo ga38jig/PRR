@@ -37,9 +37,11 @@ Tao=zeros(3,T/dt);
 for t=0:dt:T
     
     % Phase 0.
-    if t==0
+    if i==1
         Q_ = q0;    
-    end 
+    else
+        Q_ = Q(:,i-1) + dQ_;
+    end
        
     % Main Computational Body.
     J0_ = R.jacob0(Q_,'rpy');

@@ -49,9 +49,7 @@ T = 5;
 
 %% a) Consider how the inverse kinematics that compute q from w could be derived.
 
-%% b) Implement Newton-Raphston to iteratively compute the inverse kinematics.
-
-
+%% b) Implement rwl
 
 
 
