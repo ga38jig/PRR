@@ -40,6 +40,10 @@ F0 = [1 2 3]';
 T = 5;
 
 [ Q, dQ, W, K, Tao] = rrc(q0, dw0, F0, T)
+% 
+% planar_robot.teach([pi/2,-pi/4, -pi/3])
+
+% q_ = q0
 
 %%
 
@@ -50,6 +54,29 @@ T = 5;
 %% a) Consider how the inverse kinematics that compute q from w could be derived.
 
 %% b) Implement Newton-Raphston to iteratively compute the inverse kinematics.
+q0 = [0.1 0.2 0.3]';
+oTe1 = [0.5,-0.866,0,6.3925;
+        0.866,0.5,0,6.0302;
+        0,0,1,0;
+        0,0,0,1];
+    
+oTe2 = [0.5,-0.866,0,7.5373;
+        0.866,0.5,0,3.9266;
+        0,0,1,0;
+        0,0,0,1];
+    
+w1 = [oTe1(1,4) oTe1(2,4) q0(1)+q0(2)+q0(3)]';
+w2 = [oTe2(1,4) oTe2(2,4) q0(1)+q0(2)+q0(3)]';
+    
+q1 = rwl(w1,q0)
+M = [1 1 1 0 0 0];
+%
+
+q2 = rwl(w2,q0)
+
+
+
+
 
 
 
