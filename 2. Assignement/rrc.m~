@@ -45,11 +45,11 @@ for t=0:dt:T
     end
        
     % Main Computational Body.
-    J0_ = R.jacob0(Q_,'rpy');
+    J0_ = R.jacob0(Q_);
     J0 = J0_([1;2;6],:);
     dQ_ = J0\dw0; 
     oTe = R.fkine(Q_);
-    W_ = [oTe(1,4); oTe(2,4); sum(Q_)];
+    W_ = [oTe(1,4); oTe(2,4); Q_(1)+Q_(2)+Q_(3)];
     K_ = det(J0);
     Tao_ = J0'*F0;
     

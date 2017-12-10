@@ -30,7 +30,8 @@ while( i<=21 )
     q(:,i+1) = q(:,i) - inv(J0) * ( f - w );
     
     % Break loop if the delta of the angles is less than 0.01.
-    if q(1,i+1)-q(1,i)<0.01 && q(2,i+1)-q(2,i)<0.01 && q(3,i+1)-q(3,i)<0.01
+%     if q(1,i+1)-q(1,i)<0.01 && q(2,i+1)-q(2,i)<0.01 && q(3,i+1)-q(3,i)<0.01
+    if norm( q(:,i+1) - q(:,i) ) < 0.01
         
         break
         
