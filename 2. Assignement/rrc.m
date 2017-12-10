@@ -40,11 +40,12 @@ for t=0:dt:T
     if i==1
         Q_ = q0;    
     else
-        Q_ = Q(:,i-1) + dQ_;
+        % Explicit Euler Method as Numerical Integration Scheme.
+        Q_ = Q(:,i-1) + dQ_ * dt;
     end
        
     % Main Computational Body.
-    J0_ = R.jacob0(Q_,'rpy');
+    J0_ = R.jacob0(Q_);
     J0 = J0_([1;2;6],:);
     dQ_ = inv(J0) * dw0; 
     oTe = R.fkine(Q_);
