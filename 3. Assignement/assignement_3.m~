@@ -1,0 +1,7 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Exercise 1: Inverse Dynamics %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% a) Implement constVel to compute joint angles, velocities and accelerations.
+q0 = 
+[Q, dQ, ddQ, W, t] = constVel(q0, dw0, delta_t, T);
