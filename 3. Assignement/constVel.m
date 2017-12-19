@@ -15,6 +15,8 @@ function [Q, dQ, ddQ, W, t] = constVel(q0, dw0, delta_t, T)
 % W: Cartesian Position of the End Effector.
 % t: Time Steps of the Simulation.
 
+% [Q, dQ, ddQ, W, t] = zeros(1,4);
+
 % Define Robot Description.
 L(1) = Link('d', 0, 'a', 1, 'alpha', 0);
 L(2) = Link('d', 0, 'a', 1, 'alpha', 0);
@@ -23,8 +25,18 @@ R = SerialLink(L, 'name', 'planar_robot');
 % Initialize Index.
 i=1;
 
+% Compute Joint Angles with ode45 Integration.
+t=0:delta_t:T+delta_t;
+FUNC = @(t,q)func(R, dw0, q);
+[t,Q] = ode45(FUNC,t,q0);
+Q = Q'
 
-for t=0:delta_t:T
+
+
+for t=0:delta_t:T+delta_t
+    
+    % Compute Joint Velocity.
+    dQ = func(R, dw0, Q(:,i));
     
     if i ~=1
         
@@ -32,7 +44,6 @@ for t=0:delta_t:T
         ddQ(:,i-1) = ( dQ(:,i) - dQ(:,i-1) ) / delta_t;
     
     end
-    
     
 
     i=i+1;
@@ -44,11 +55,13 @@ end
 
 
 % Define function to compute joint velocities.
-function dQ_ = func(R, dw0, Q)
+function dq_ = func(R, dw0, q)
     
-    J0_ = R.jacob0(Q');
-    J0 = J0 = J0_([1;2;6],:);
+    J0_ = R.jacob0(q');
+    J0 = J0_([1;2],:);
+    dq_ = J0\dw0; 
 
 end
+
     
 
