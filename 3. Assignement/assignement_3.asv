@@ -96,30 +96,18 @@ display(Tao_)
 
 %% TEST: Plot joint torques
 
-% Test fabio
-TAU = invdyn_fabio(Q,dQ,ddQ);
-
-% Plot results:
-subplot(2,3,1)
+subplot(2,2,1)
 plot(t,Tao(1,:))
-title('Tao_1')
+title('Taox')
 
-subplot(2,3,4)
+subplot(2,2,3)
 plot(t,Tao(2,:))
-title('Tao_2')
+title('Ty')
 
-subplot(2,3,2)
+subplot(2,2,2)
 plot(t,Tao_(1,:))
-title('Test_1')
+title('T_x')
 
-subplot(2,3,5)
+subplot(2,2,4)
 plot(t,Tao_(2,:))
-title('Test_2')
-
-subplot(2,3,3)
-plot(t,TAU(1,:))
-title('TAU_1')
-
-subplot(2,3,6)
-plot(t,TAU(2,:))
-title('TAU_2')
+title('T_y')

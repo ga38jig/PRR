@@ -1,5 +1,6 @@
-function [Q, dQ, ddQ, W, t] = constVel(q0, dw0, delta_t, T)
-%CONSTVEL Summary of this function goes here
+function [Q, dQ, ddQ, W, t] = constVel(q0, dw0, dt, T)
+%CONSTVEL Computes joint angles, velocities and accelerations that result
+%from a motion with constant velocity dw0.
 %   Detailed explanation goes here
 
 % INPUTS:
@@ -15,9 +16,7 @@ function [Q, dQ, ddQ, W, t] = constVel(q0, dw0, delta_t, T)
 % W: Cartesian Position of the End Effector.
 % t: Time Steps of the Simulation.
 
-% [Q, dQ, ddQ, W, t] = zeros(1,4);
-
-% Define Robot Description.
+% Describe Robot.
 L(1) = Link('d', 0, 'a', 1, 'alpha', 0);
 L(2) = Link('d', 0, 'a', 1, 'alpha', 0);
 R = SerialLink(L, 'name', 'planar_robot');
@@ -25,31 +24,42 @@ R = SerialLink(L, 'name', 'planar_robot');
 % Initialize Index.
 i=1;
 
+% Initialize Arrays.
+dQ = zeros(2,T/dt+1);
+ddQ = zeros(2,T/dt+1);
+W = zeros(2,T/dt+1);
+
 % Compute Joint Angles with ode45 Integration.
-t=0:delta_t:T+delta_t;
+t=0:dt:T+dt;
 FUNC = @(t,q)func(R, dw0, q);
 [t,Q] = ode45(FUNC,t,q0);
-Q = Q'
+Q = Q';
 
-
-
-for t=0:delta_t:T+delta_t
+for t_=0:dt:T+dt
     
     % Compute Joint Velocity.
-    dQ = func(R, dw0, Q(:,i));
+    dQ(:,i) = func(R, dw0, Q(:,i));
     
-    if i ~=1
+    % Compute Joint Position:
+    oTe = R.fkine(Q(:,i));
+    W(:,i) = [oTe(1,4) oTe(2,4)]';
+    
+    if i~=1
         
         % Finite Difference Scheme to Compute Accelerations:
-        ddQ(:,i-1) = ( dQ(:,i) - dQ(:,i-1) ) / delta_t;
+        ddQ(:,i-1) = ( dQ(:,i) - dQ(:,i-1) ) / dt;
     
     end
     
-
     i=i+1;
+    
 end
 
-
+% Reformat Outputs.
+t = 0:dt:T;
+Q = Q(:,1:101);
+dQ = dQ(:,1:101);
+W = W(:,1:101);
 
 end
 

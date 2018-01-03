@@ -6,7 +6,7 @@ L2 = Link('revolute', 'd', 0 , 'a', 1, 'alpha', 0);
 Robot = SerialLink([L1,L2]);
 
 FUNC = @(t,q)func(Robot,w0,q);
-[t,Q] = ode45(FUNC,[0:dt:T+dt],q0);
+[t,Q] = ode45(FUNC,[0:dt:T+dt],q0)
 Q = Q';
 Q1 = zeros(2,(T/dt)+1);
 Q2 = zeros(2,(T/dt)+1);
@@ -45,5 +45,5 @@ end
 function [q1] = func(Robot,w0,q)
 J0 = Robot.jacob0([q(1),q(2)]);
 J = [J0(1,:); J0(2,:)];
-q1 = inv(J) * w0;
+q1 = J \ w0;
 end
