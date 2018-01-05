@@ -87,7 +87,7 @@ Tao_ = zeros(2,length(Tao));
 
 for i=1:length(Tao_)
     
-    Tao_(:,i) = R_dyn.rne(Q(:,i)', dQ(:,i)', ddQ(:,i)', [0 9,81]');
+    Tao_(:,i) = R_dyn.rne(Q(:,i)', dQ(:,i)', ddQ(:,i)', [0 9.81 0]');
     
 end
 
@@ -123,3 +123,9 @@ title('TAU_1')
 subplot(2,3,6)
 plot(t,TAU(2,:))
 title('TAU_2')
+
+%% c) Implement cal_traj() to compute a path.
+
+Traj = cal_traj(via, q0, Tao, tBe, dt);
+
+
