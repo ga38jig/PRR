@@ -18,7 +18,7 @@ display(W)
 %% TEST: Check outputs of function constVel().
 L(1) = Link('d', 0, 'a', 1, 'alpha', 0);
 L(2) = Link('d', 0, 'a', 1, 'alpha', 0);
-R = SerialLink(L, 'name', 'planar_robot');
+R = SerialLink(L, 'name', 'planar-robot');
 
 % Final cartesian position computed from q_n identical to w_n?
 oTe = R.fkine(Q(:,T/dt+1));
@@ -126,6 +126,78 @@ title('TAU_2')
 
 %% c) Implement cal_traj() to compute a path.
 
+
+
 Traj = cal_traj(via, q0, Tao, tBe, dt);
+
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Exercise 2: Forward Dynamics %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% a) Implement createRobot() to generate SerialLink object.
+
+Rob = createRobot();
+
+%% b) Implement fwddyn() to determine the behaviour of the robot.
+
+% Test Input:
+q0 = [0 0 0]';
+T = 1;
+dt = 0.01;
+
+% Compute Forward Dynamics with fwddyn():
+[Q, dQ, ddQ, t, Tao] = fwddyn(Rob, q0, dt, T);
+
+% Display Outputs:
+display(Q')
+display(dQ')
+% display(ddQ)
+% display(Tao)
+
+%% TEST: Animate Robot
+
+Rob.plot(Q')
+
+
+%% TEST: fdyn()
+
+T=0.5;
+[T,Qtest,dQtest] = Rob.fdyn(T);
+
+% Display Outputs:
+display(Qtest)
+display(dQtest)
+
+%% Plot joint positions
+subplot(3,2,1)
+plot(T,Qtest(:,1))
+title('Qtest_1')
+
+subplot(3,2,3)
+plot(T,Qtest(:,2))
+title('Qtest_2')
+
+subplot(3,2,5)
+plot(T,Qtest(:,3))
+title('Qtest_3')
+
+% Plot joint velocities
+subplot(3,2,2)
+plot(T,dQtest(:,1))
+title('dQtest_1')
+
+subplot(3,2,4)
+plot(T,dQtest(:,2))
+title('dQtest_2')
+
+subplot(3,2,6)
+plot(T,dQtest(:,3))
+title('QDtest_3')
+
+%% TEST: Animate robot
+figure(2)
+Rob.plot(Q)
+
 
 
